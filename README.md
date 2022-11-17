@@ -5,7 +5,7 @@
 Clone the repo:
 
 ```bash
-git clone https://github.com/
+git clone https://github.com/Vectormike/fantastic-palm-tree bananapie
 cd bananapie
 ```
 
