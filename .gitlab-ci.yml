@@ -1,0 +1,43 @@
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - test
+  - heroku deploy
+
+test:
+    services:
+        - mongo:latest
+    script:
+        - npm install
+        - tsc -p
+        - node ./dist/server.js
+    only:
+        - merge_request    
+
+heroku deploy:  
+    image: ruby:latest
+    stage: heroku deploy
+    before_script:
+      - gem install dpl
+    script:
+      - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_API_KEY
+    only:
+      - development  
+
+# Add tests for emails
+# Unit tests for sign in/ signup and payment
+
+# Pick zero or more services to be used on all builds.
+# Only needed when using a docker container to run your tests in.
+# Check out: https://docs.gitlab.com/ee/ci/services/index.html
+# test_async:
+#   script:
+#     - npm install
+#     - node ./specs/start.js ./specs/async.spec.js
+
+# test_db:
+#   script:
+#     - npm install
+#     - node ./specs/start.js ./specs/db-postgres.spec.js

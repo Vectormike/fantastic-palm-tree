@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  api:
+    container_name: api
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_URL=${MONGOURI}
+    ports:
+      - ${PORT}:${PORT}
+    restart: always
+    volumes:
+      - ./node_modules:/app/node_modules
+  mongodb:
+    container_name: mongodb
+    image: mongo:6
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/db
+    networks:
+      - node-network
+networks:
+  node-network:
+    driver: bridge
